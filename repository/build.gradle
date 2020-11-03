@@ -1,0 +1,26 @@
+repositories {
+	mavenCentral()
+}
+
+test {
+	useTestNG()
+
+	testLogging {
+		showStandardStreams = true
+		events "passed", "skipped", "failed", "standardError"
+		exceptionFormat "full"
+	}
+
+afterSuite { TestDescriptor suite, TestResult result ->
+	if (!suite.parent && result.getTestCount() > 0) {
+		long time = result.getEndTime() -result.getStartTime()
+		logger.info("Time execution: $time")
+	}
+	
+}
+}
+
+dependencies {
+	compile project(':model')
+	testCompile 'org.testng:testng:7.0.0'
+}
